@@ -17,9 +17,10 @@ RUN npm install
 
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.name="indyscan-daemon"
-LABEL org.label-schema.description="NodeJS app to look foro new transactions and saving them to MongoDB"
-LABEL org.label-schema.vcs-url="https://github.com/Patrik-Stas/indyscan"
+LABEL org.label-schema.description="NodeJS app to look for new transactions and saving them to MongoDB"
+LABEL org.label-schema.vcs-url="https://github.com/creatornader/indyscan"
 
 ENV LD_LIBRARY_PATH "/libindy/debug/"
 RUN mkdir -p /home/indyscan/.indy_client/wallet
 CMD npm run start
+

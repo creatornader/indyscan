@@ -12,21 +12,6 @@ services:
     ports:
     - 27999:27017
 
-  indyscan:
-    image: indyscan-webapp:latest
-    container_name: indyscan-webapp
-    networks:
-    - indynet
-    depends_on:
-    - mongo
-    environment:
-    - URL_MONGO=mongodb://mongo.indynet:27017
-    - INDY_NETWORKS_V2=${INDY_NETWORKS_V2}
-    - INDY_NETWORKS=${INDY_NETWORKS}
-    - WEBAPP_PORT=5050
-    ports:
-    - '5050:5050'
-
   indyscan-daemon:
     image: indyscan-daemon:latest
     container_name: indyscan-daemon
