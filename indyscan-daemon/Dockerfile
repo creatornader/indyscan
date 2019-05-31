@@ -8,6 +8,8 @@ COPY indyscan-daemon /home/indyscan/indyscan-daemon
 COPY indyscan-storage /home/indyscan/indyscan-storage
 COPY indyscan-txtype /home/indyscan/indyscan-txtype
 
+COPY dids.txt /home/indyscan
+
 RUN chown -R indyscan:indyscan /home/indyscan
 USER indyscan
 
