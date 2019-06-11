@@ -35,7 +35,6 @@ Following is for those who want to contribute or tweak the code. Here's how to s
 ```
 - start/               - automation to startup IndyScan (and optionally IndyPool)
 - indyscan-api/        - http client to call indyscan api
-- indyscan-webapp/     - nextjs web app
 - indyscan-daemon/     - process looking for a new transactions
 - indyscan-storage/    - shared library for app and daemon
 - indyscan-txtype/     - shared library contaning information about indy tx types
