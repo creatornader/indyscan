@@ -17,7 +17,7 @@ services:
     - 27999:27017
 
   indyscan-daemon:
-    image: indyscan-daemon:latest
+    image: pstas/indyscan-daemon:latest
     container_name: indyscan-daemon
     volumes:
       - ${HOME}/.indy_client/pool/${TARGET_POOL}:/home/indyscan/.indy_client/pool/${TARGET_POOL}
@@ -30,7 +30,7 @@ services:
     - SCAN_MODE=FAST
 
   indyscan:
-    image: indyscan-webapp:latest
+    image: pstas/indyscan-webapp:latest
     container_name: indyscan-webapp
     networks:
       - indynet
