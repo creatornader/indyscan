@@ -88,11 +88,12 @@ function help () {
 
 # shellcheck disable=SC2015
 [[ "${__usage+x}" ]] || read -r -d '' __usage <<-'EOF' || true # exits non-zero when EOF encountered
-  -t     [arg]            List indyscan images with tag. Default="latest"
-  -v                      Enable verbose mode, print script as it is executed
+  -v --version     [arg]  Tag of IndySDK repo which is used to get doker pool definition file. Default="v1.8.3"
+  -a --address     [arg]  Address/hostname where on which is pool suppose to be available. Default="127.0.0.1"
+  -r --image-repo  [arg]  Repository of docker image to be built.
+  -t --image-tag   [arg]  Tag of the docker image to be built.
   -h --help               This page
   -n --no-color           Disable color output
-  -1 --one                Do just one thing
 EOF
 
 # shellcheck disable=SC2015
@@ -285,11 +286,6 @@ __b3bp_err_report() {
 ##############################################################################
 
 
-# verbose mode
-if [[ "${arg_v:?}" = "1" ]]; then
-  set -o verbose
-fi
-
 # no color mode
 if [[ "${arg_n:?}" = "1" ]]; then
   NO_COLOR="true"
@@ -307,7 +303,23 @@ fi
 
 [[ "${LOG_LEVEL:-}" ]] || emergency "Cannot continue without LOG_LEVEL. "
 
-TAG="$arg_t"
 
-docker images "indyscan-webapp:$TAG"
-docker images "indyscan-daemon:$TAG"
+POOL_ADDRESS="$arg_a"
+DOCKER_POOL_VERSION="$arg_v"
+IMAGE_REPOSITORY="$arg_r"
+IMAGE_TAG="$arg_t"
+
+mkdir -p "$__dir/tmp"
+DOCKERFILE_PATH="$__dir/tmp"/indy-pool-"$DOCKER_POOL_VERSION".dockerfile
+#IMAGE_TAG=indyscan_indy_pool-"$POOL_ADDRESS":"$DOCKER_POOL_VERSION"
+
+info "Pool address: $POOL_ADDRESS"
+info "Indypool dockerfile version: $DOCKER_POOL_VERSION"
+info "Will create download indypool dockerfile to: $DOCKERFILE_PATH"
+info "Will create image tagged as: $IMAGE_TAG"
+
+curl https://raw.githubusercontent.com/hyperledger/indy-sdk/"$DOCKER_POOL_VERSION"/ci/indy-pool.dockerfile > "$DOCKERFILE_PATH"
+docker build --build-arg pool_ip="$POOL_ADDRESS" -f "$DOCKERFILE_PATH" -t "$IMAGE_REPOSITORY:$IMAGE_TAG" .
+
+info "Image built:"
+docker image ls | grep "$IMAGE_REPOSITORY" | grep "$IMAGE_TAG"

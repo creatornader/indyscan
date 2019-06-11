@@ -88,11 +88,8 @@ function help () {
 
 # shellcheck disable=SC2015
 [[ "${__usage+x}" ]] || read -r -d '' __usage <<-'EOF' || true # exits non-zero when EOF encountered
-  -t     [arg]            List indyscan images with tag. Default="latest"
-  -v                      Enable verbose mode, print script as it is executed
   -h --help               This page
   -n --no-color           Disable color output
-  -1 --one                Do just one thing
 EOF
 
 # shellcheck disable=SC2015
@@ -285,11 +282,6 @@ __b3bp_err_report() {
 ##############################################################################
 
 
-# verbose mode
-if [[ "${arg_v:?}" = "1" ]]; then
-  set -o verbose
-fi
-
 # no color mode
 if [[ "${arg_n:?}" = "1" ]]; then
   NO_COLOR="true"
@@ -307,7 +299,16 @@ fi
 
 [[ "${LOG_LEVEL:-}" ]] || emergency "Cannot continue without LOG_LEVEL. "
 
-TAG="$arg_t"
 
-docker images "indyscan-webapp:$TAG"
-docker images "indyscan-daemon:$TAG"
+
+"$__dir"/build-indypool.sh --address "127.0.0.1" --version "v1.8.3" --image-repo "localhost/indypool" --image-tag "indyscan"
+echo "directory path = $__dir"
+
+export TARGET_POOL="indyscan-indypool"
+POOL_DIR="${HOME}"/.indy_client/pool/"${TARGET_POOL}"
+mkdir -p "${POOL_DIR}"
+POOL_FILE="${POOL_DIR}/${TARGET_POOL}".txn
+docker run localhost/indypool:indyscan cat "/var/lib/indy/sandbox/pool_transactions_genesis" > "$POOL_FILE"
+
+echo "Going to turn docker-compose up. POOL_DIR=$POOL_DIR   TARGET_POOL=$TARGET_POOL"
+docker-compose up
