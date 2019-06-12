@@ -1,0 +1,32 @@
+PARSER:
+- "txn"->"metadata"->"from" == did of transaction writer
+
+- "txn"->"data"->"dest" == did of data owner
+- "txn"->"data"->"raw" == hash of raw attribute data (did document?)
+- "txn"->"type" == transaction type (e.g. schema, attrirbute, claim definiton, etc.)
+- "txnMetadata"->"txnTime" == time when transaction was submitted
+
+
+MAPPING TO `VERSION-REPO-SERVICE`:
+- "txnTime" == "update_time"
+- "dest" == "did"
+
+
+NYM -> contains public key and DID
+ATTRIB -> contains service endpoints
+
+NODE = 0
+NYM = 1
+ATTRIB = 100
+SCHEMA = 101
+CLAIM_DEF = 102
+POOL_UPGRADE = 109
+NODE_UPGRADE = 110
+POOL_CONFIG = 111
+
+https://hyperledger-indy.readthedocs.io/projects/node/en/latest/transactions.html
+
+For Sovrin Genesis files:
+live_genesis = MAINNET
+sandbox_genesis = TESTNET
+builder_genesis = BUILDER
