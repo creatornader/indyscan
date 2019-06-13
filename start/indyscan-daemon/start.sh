@@ -381,4 +381,4 @@ export MOUNTED_POOL_DIR="$HOME/.indy_client/pool"
 export SCAN_MODE="${arg_s}"
 set +x
 
-docker-compose -f "$__dir"/docker-compose.yml up -d
+docker-compose -f "$__dir"/docker-compose.yml up
