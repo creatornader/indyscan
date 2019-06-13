@@ -17,6 +17,7 @@ services:
     container_name: indyscan-daemon
     volumes:
       - ${MOUNTED_POOL_DIR}:/home/indyscan/.indy_client/pool
+      - version-repo-service_loopbackDev:/var/lib/mysql
     network_mode: host
     depends_on:
       - mongo
@@ -28,6 +29,8 @@ services:
 volumes:
   indyscandb:
     external: false
+  version-repo-service_loopbackDev:
+    external: true
 
 networks:
   indynet:
