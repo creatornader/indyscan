@@ -14,7 +14,6 @@ USER indyscan
 WORKDIR /home/indyscan/indyscan-daemon
 RUN npm install
 
-
 LABEL org.label-schema.schema-version="1.0"
 LABEL org.label-schema.name="indyscan-daemon"
 LABEL org.label-schema.description="NodeJS app to look for new transactions and save them to MongoDB"

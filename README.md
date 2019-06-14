@@ -27,6 +27,11 @@ You have 3 main options:
 
   This might be the most useful in case you want to browse Indy pool running on your local machine,
   or your private Indy network deployed elsewhere. Browser for public Sovrin Indy networks is deployed [here](https://indyscan.io).
+`cd start/`
+`./fetch-public-networks.sh`
+`./start-local2public.sh`
+
+
 
 # DEV
 Following is for those who want to contribute or tweak the code. Here's how to set up your native environment. So far only tested on Mac OS.

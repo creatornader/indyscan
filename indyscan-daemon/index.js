@@ -5,6 +5,128 @@ const createIndyClient = require('./indyclient')
 const sleep = require('sleep-promise')
 const storage = require('indyscan-storage')
 
+
+const mysql = require('mysql');
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'LOOPBACKdevuser',
+  password: 'LOOPBACKdevpwd',
+  database: 'LOOPBACKdevdb'
+});
+connection.connect((err) => {
+  if (err) throw err;
+  console.log('Connected to MySQL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+});
+
+//const fs = require('fs');
+//const readline = require('readline');
+//const stream = require('stream');
+
+async function addDids(){
+  // load in the target DIDs
+  var DIDs = [];
+  DIDs.push('did:sov:NMjQb59rKTJXKNqVYfcZFi');
+  DIDs.push('did:sov:K2ze2xR8MAxkQscdkboKnD');
+  //var DIDs = require('fs').readFileSync('dids.txt').toString().split('\n').forEach(function (line) { line; });
+  //console.log(DIDs);
+  /*
+  
+  var instream = fs.createReadStream('./dids.txt');
+  var outstream = new stream;
+  var rl = readline.createInterface(instream, outstream);
+
+  rl.on('line', function(line) {
+    // process line here
+    DIDs.push(line);
+  })
+
+  rl.on('close', function() {
+    // do something on finish here
+    console.log('DIDs', DIDs);
+    console.log('done');
+  })
+  */
+  console.log('Connected to MySQL##########################################################################');
+  //console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+  // retrieve all transactions from Mongo related to target DIDs
+  //findTx();
+  //console.log(DIDs);
+  //console.log(DIDs[1]);
+  //console.log(DIDs[0]);
+
+  // for each DID, assemble the DID Doc and store it in MySQL
+  
+  for(const did of DIDs){
+    //console.log(did);
+    var sql = "SELECT * FROM LOOPBACKdevdb.DidRecords WHERE owner_did='";
+    sql += did;
+    sql += "' ORDER BY update_time DESC";
+    //console.log(sql);
+    //console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+    
+    // construct DID Document
+    var DID_Document_JS = {
+      id:did,
+      service:[],
+      authentication:{},
+      publicKey:[],
+      context:'https://w3id.org/did/v1'
+    };
+    var DID_Document = JSON.stringify(DID_Document_JS);
+    console.log(DID_Document);
+
+    // construct DID Record
+    var DID_Record_JS = {
+      owner_did:did,
+      update_time:'123',
+      version_nr:0,
+      version_id:'0',
+      did_doc:DID_Document,
+      version_metadata:{},
+      method:'sov'
+    };
+    var DID_Record = JSON.stringify(DID_Record_JS);
+    console.log(DID_Record);
+    
+    console.log(typeof DID_Record)
+    //connection.query('INSERT INTO LOOPBACKdevdb.DidRecords SET ?', DID_Record, (error, results, fields) => {
+    /*
+    connection.query('INSERT INTO LOOPBACKdevdb.DidRecords SET {owner_did:,update_time:,version_nr:,version_id:,did_doc:,version_metadata:,method:}', (error, results, fields) => {
+      if (error) {
+        console.error('An error occurred while executing the query')
+        throw error
+      }
+    })
+    */
+    
+    connection.query('SELECT * FROM LOOPBACKdevdb.DidRecords', function (error, results, fields){
+      if (error)
+        throw error;
+
+      results.forEach(result => {
+        console.log(result);
+      });
+    });
+
+    
+    
+  }
+  
+}
+/*
+  
+*/
+
+//* `owner_did` (type: string) -> REQUIRED
+//* `update_time` (type: string) -> REQUIRED
+//* `version_nr` (type: number) -> REQUIRED
+//* `version_id` (type: string)
+//* `did_doc` (type: JSON) -> REQUIRED
+//* `version_metadata` (type: JSON)
+//* `method` (type: string) -> REQUIRED
+//* `id` (type: number) -> auto-injected ID which serves as the primary key for the DID Records database
+
+
 const URL_MONGO = process.env.URL_MONGO || 'mongodb://localhost:27017'
 const INDY_NETWORKS = process.env.INDY_NETWORKS
 let ledgerManager
@@ -75,6 +197,7 @@ async function scanLedger (indyClient, txCollection, networkName, ledgerName, re
     try {
       console.log(`${logPrefix} Checking ${txid}th transaction.`)
       const tx = await indyClient.getTx(txid, ledgerCode)
+      addDids();
       if (tx) {
         console.log(`${logPrefix} Retrieved '${txid}'th tx:\n${txid}:\n${JSON.stringify(tx)}`)
         await txCollection.addTx(tx)

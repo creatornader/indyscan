@@ -1,0 +1,46 @@
+TXN
+
+{
+  "_id" : ObjectId("5d017f5e440b0d0018f92b2c"),
+  "txnMetadata" : {
+    "seqNo" : 2
+  },
+  "rootHash" : "99FzSdSfvUVmHtjVWTLq8WEN8G8aJtn8NKx4CAWCREpz",
+  "ver" : "1",
+  "txn" : {
+    "metadata" : {},
+    "type" : "1",
+    "data" : {
+      "alias" : "Jason Law",
+      "role" : "0",
+      "dest" : "K2ze2xR8MAxkQscdkboKnD",
+      "verkey" : "~KhvZWs1QSS8bS1RxB55NE3"
+    }
+  },
+  "reqSignature" : {},
+  "auditPath" : [ 
+    "Enejxy16re4eva1mehABWpswuaRRbZN1B9sPFHHthZvm"
+  ]
+}
+
+
+DID DOCUMENT
+
+{
+  "id": "did:sov:K2ze2xR8MAxkQscdkboKnD",
+  "service": [],
+  "authentication": {
+    "type": "Ed25519SignatureAuthentication2018",
+    "publicKey": [
+      "did:sov:K2ze2xR8MAxkQscdkboKnD#key-1"
+    ]
+  },
+  "publicKey": [
+    {
+      "id": "did:sov:K2ze2xR8MAxkQscdkboKnD#key-1",
+      "type": "Ed25519VerificationKey2018",
+      "publicKeyBase58": "~KhvZWs1QSS8bS1RxB55NE3"
+    }
+  ],
+  "@context": "https://w3id.org/did/v1"
+}
