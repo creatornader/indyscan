@@ -18,18 +18,18 @@
   },
   "dependencies": {
     "@types/jest": "^24.0.11",
-    "mongodb": "^3.1.10",
+    "mongodb": "^3.1.13",
     "indyscan-txtype": "file:../indyscan-txtype"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
+    "@babel/cli": "^7.28.6",
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.4.3",
     "@babel/register": "^7.0.0",
-    "babel-jest": "^24.7.1",
-    "jest": "^24.7.1",
-    "jest-cli": "^24.7.1",
-    "standard": "^12.0.1"
+    "babel-jest": "^30.4.1",
+    "jest": "^30.4.2",
+    "jest-cli": "^30.4.2",
+    "standard": "^17.1.2"
   },
   "keywords": [],
   "author": "",
